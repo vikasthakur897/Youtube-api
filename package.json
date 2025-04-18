@@ -1,0 +1,27 @@
+{
+  "name": "youtube-api-node",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vikasthakur897/Youtube-api#readme",
+  "bugs": {
+    "url": "https://github.com/vikasthakur897/Youtube-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikasthakur897/Youtube-api.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.9"
+  }
+}
