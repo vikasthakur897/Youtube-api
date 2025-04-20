@@ -10,8 +10,6 @@ const router = express.Router();
 
 router.post("/signup", async(req, res) => {
     // Handle user signup logic here
-
-    
     try{
       const hashPassword = await bcrypt.hash(req.body.password , 10);
       console.log("Body of Hash password :", hashPassword)
@@ -46,7 +44,7 @@ router.post("/signup", async(req, res) => {
 router.post("/login", async(req, res) => {
     try {
 
-        const  existingUser = await userModel.findOne({email: req.body.email})
+        const  existingUser = await User.findOne({email: req.body.email})
          
         if(!existingUser){
             return res.status(404).json({
@@ -54,7 +52,7 @@ router.post("/login", async(req, res) => {
             })
         }
 
-        const isvalid =await bcrypt.compare(
+        const isvalid = await bcrypt.compare(
             req.body.password,
             existingUser.password
         )
