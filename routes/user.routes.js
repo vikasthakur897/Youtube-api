@@ -94,4 +94,70 @@ router.post("/login", async(req, res) => {
     }
 })
 
+router.put("/update-profile", checkAuth, async(req , res) => {
+    try {
+        const { channelname, phone } = req.body;
+
+        let updatedData = { channelname, phone };
+
+        if(req.file && req,file.logo){
+            const uploadedImage = await cloudinary.uploader.upload(
+                req.file.logo.tempFilePath
+            );
+            updatedData.logoUrl = uploadedImage.secure_url;
+            updatedData.logoId = uploadedImage.public_id;
+        }
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user_id,
+            updatedData,
+            { new: true }
+        );
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedUser
+        })
+
+        
+    } catch (error) {
+        console.log("Error in update profile", error)
+        res.status(500).json({
+            message: "Error in update profile",
+            error: error.message
+        })
+        
+    }
+})
+
+router.post("/subscribe", checkAuth, async(req, res) =>{
+    try {
+        const { channelId } = req.body; // ID of the channel to subscribe to 
+        if(req.user_id === cjhannelId ){
+            return res.status(400).json({
+                message: "You cannot subscribe to your own channel"
+            })
+        }
+       const currentUser =  await User.findByIdAndUpdate(
+            req.user_id, {
+                $addToSet: { subscribedChannels: channelId },
+            }
+        )
+       const subscribedUser = await User.findByIdAndUpdate(channelId,{
+            $inc: { subscribers: 1 } 
+        })
+
+        res.status(200).json({
+            message: "Subscribed successfully"
+        },{ currentUser, subscribedUser})
+        
+    } catch (error) {
+        console.log("Error in subscribe", error)
+        res.status(500).json({
+            message: "Something went wrong",
+            error: error.message
+        })
+        
+    }
+})
+
 export default router;
