@@ -147,9 +147,12 @@ router.post("/subscribe", checkAuth, async(req, res) =>{
         })
 
         res.status(200).json({
-            message: "Subscribed successfully"
-        },{ currentUser, subscribedUser})
-        
+            message: "Subscribed successfully",
+            data: {
+                currentUser, subscribedUser
+            }
+        } )
+
     } catch (error) {
         console.log("Error in subscribe", error)
         res.status(500).json({
